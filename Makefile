@@ -25,7 +25,7 @@ anvil:
 
 deploy-anvil:
 	@echo "Deploying with Forge to Anvil..."
-	@forge create ./src/Counter.sol:Counter --rpc-url anvil --interactive | tee deployment-anvil.txt
+	@forge create ./src/SoulboundToken.sol:SoulboundToken --rpc-url anvil --interactive | tee deployment-anvil.txt
 
 deploy-btp:
 	@eval $$(curl -H "x-auth-token: $${BTP_SERVICE_TOKEN}" -s $${BTP_CLUSTER_MANAGER_URL}/ide/foundry/$${BTP_SCS_ID}/env | sed 's/^/export /'); \
@@ -43,7 +43,7 @@ deploy-btp:
 	if [ "$${BTP_EIP_1559_ENABLED}" = "false" ]; then \
 		args="$$args --legacy"; \
 	fi; \
-	forge create ./src/Counter.sol:Counter $${EXTRA_ARGS} --rpc-url $${BTP_RPC_URL} $$args --constructor-args "GenericToken" "GT" | tee deployment.txt;
+	forge create ./src/SoulboundToken.sol:SoulboundToken $${EXTRA_ARGS} --rpc-url $${BTP_RPC_URL} $$args --constructor-args "GenericToken" "GT" | tee deployment.txt;
 
 script-anvil:
 	@if [ ! -f deployment-anvil.txt ]; then \
