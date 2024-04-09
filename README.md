@@ -1,4 +1,4 @@
-# ERC20
+# Soulbound
 
 A basic Soulbound contract.
 
