@@ -3,13 +3,12 @@
 
 pragma solidity ^0.8.17;
 
-import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
-import {OwnableUpgradeable} from "@openzeppelin/contracts-upgrades/access/OwnableUpgradeable.sol";
-import {StringsUpgradeable} from "@openzeppelin/contracts-upgrades/utils/StringsUpgradeable.sol";
-import {ERC1155SupplyUpgradeable, ERC1155Upgradeable} from "@openzeppelin/contracts-upgrades/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
-import {CountersUpgradeable} from "@openzeppelin/contracts-upgrades/utils/CountersUpgradeable.sol";
-import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgrades/access/AccessControlUpgradeable.sol";
-import {PausableUpgradeable, Initializable} from "@openzeppelin/contracts-upgrades/security/PausableUpgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
+import {ERC1155SupplyUpgradeable, ERC1155Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
+import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import {PausableUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 contract Soulbound is
     Initializable,
@@ -18,10 +17,10 @@ contract Soulbound is
     AccessControlUpgradeable,
     PausableUpgradeable
 {
-    using StringsUpgradeable for uint256;
-    using CountersUpgradeable for CountersUpgradeable.Counter;
+    using Strings for uint256;
+    //using CountersUpgradeable for CountersUpgradeable.Counter;
 
-    CountersUpgradeable.Counter private _tokenIdCounter;
+    uint256 _tokenIdCounter;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
@@ -35,27 +34,26 @@ contract Soulbound is
     ) external initializer {
         __ERC1155_init(uri_);
         __AccessControl_init();
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         name = name_;
         symbol = symbol_;
     }
 
-    function _beforeTokenTransfer(
-        address,
+    function _update(
         address from,
         address to,
-        uint256[] memory,
-        uint256[] memory,
-        bytes memory
-    ) internal pure override {
+        uint256[] memory ids,
+        uint256[] memory values
+    ) internal override(ERC1155SupplyUpgradeable) {
         require(
             from == address(0) || to == address(0),
             "A Soulbound token cannot be transferred"
         );
+        super._update(from, to, ids, values);
     }
 
     function getCurrentTokenId() external view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _tokenIdCounter;
     }
 
     function pause() public virtual {
@@ -76,16 +74,16 @@ contract Soulbound is
 
     function mint(uint256 amounts, address recipient) external {
         require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
-        _tokenIdCounter.increment();
-        _mint(recipient, _tokenIdCounter.current(), amounts, "");
+        _tokenIdCounter++;
+        _mint(recipient, _tokenIdCounter, amounts, "");
     }
 
     function mintBatch(uint256[] memory amounts, address recipient) public {
         uint256[] memory tokenIdsArray = new uint256[](amounts.length);
         require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
         for (uint256 i = 0; i < amounts.length; ++i) {
-            _tokenIdCounter.increment();
-            uint256 tokenId = _tokenIdCounter.current();
+            _tokenIdCounter++;
+            uint256 tokenId = _tokenIdCounter;
             tokenIdsArray[i] = tokenId;
         }
         _mintBatch(recipient, tokenIdsArray, amounts, "");
