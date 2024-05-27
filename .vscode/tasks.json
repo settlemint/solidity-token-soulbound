@@ -49,15 +49,9 @@
       "problemMatcher": []
     },
     {
-      "label": "script-anvil",
+      "label": "subgraph",
       "type": "shell",
-      "command": "EXTRA_ARGS=\"${input:extra-script-broadcast} ${input:extra-script-other}\" make script-anvil",
-      "problemMatcher": []
-    },
-    {
-      "label": "script",
-      "type": "shell",
-      "command": "EXTRA_ARGS=\"${input:extra-script-broadcast} ${input:extra-script-other}\" make script",
+      "command": "make subgraph",
       "problemMatcher": []
     },
     {
@@ -90,7 +84,10 @@
       "description": "Broadcast?",
       "default": "",
       "type": "pickString",
-      "options": ["", "--broadcast"]
+      "options": [
+        "",
+        "--broadcast"
+      ]
     },
     {
       "id": "extra-script-other",
