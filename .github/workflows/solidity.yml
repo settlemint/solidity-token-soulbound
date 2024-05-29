@@ -38,5 +38,5 @@ jobs:
     with:
       docker-image-name: solidity-token-erc20-soulbound
       runs-on: solidity-token-erc20-soulbound
-      ignition-module: 'ignition/modules/GenericTokenMeta.ts'
-      subgraph-contract-address-key: 'GenericTokenMetaModule#GenericTokenMeta'
+      ignition-module: 'ignition/modules/SoulboundToken.ts'
+      subgraph-contract-address-key: 'SoulboundToken#Soulbound'
