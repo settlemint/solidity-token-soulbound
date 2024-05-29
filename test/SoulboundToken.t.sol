@@ -96,4 +96,34 @@ contract SoulboundTokenTest is Test {
         assertEq(soulbound.balanceOf(address(2), 2), 3);
         assertEq(soulbound.balanceOf(address(2), 3), 4);
     }
+
+    function testBurnBatch() public {
+        soulbound.grantRole(soulbound.MINTER_ROLE(), address(this));
+
+        uint256[] memory tokenIds = new uint256[](3);
+        tokenIds[0] = 1;
+        tokenIds[1] = 2;
+        tokenIds[2] = 3;
+
+        // Mint some tokens first
+        uint256[] memory amounts = new uint256[](3);
+        amounts[0] = 2;
+        amounts[1] = 3;
+        amounts[2] = 4;
+        soulbound.mintBatch(amounts, address(2));
+
+        // Verify balances before burning
+        assertEq(soulbound.balanceOf(address(2), 1), 2);
+        assertEq(soulbound.balanceOf(address(2), 2), 3);
+        assertEq(soulbound.balanceOf(address(2), 3), 4);
+
+        // Burn the tokens
+        vm.prank(address(2));
+        soulbound.burnBatch(tokenIds, amounts);
+
+        // Verify balances after burning
+        assertEq(soulbound.balanceOf(address(2), 1), 0);
+        assertEq(soulbound.balanceOf(address(2), 2), 0);
+        assertEq(soulbound.balanceOf(address(2), 3), 0);
+    }
 }
