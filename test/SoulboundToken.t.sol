@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {Test, console} from "forge-std/Test.sol";
-import {Soulbound} from "../src/SoulboundToken.sol";
+import {Soulbound} from "../contracts/SoulboundToken.sol";
 
 contract SoulboundTokenTest is Test {
     Soulbound soulbound;
