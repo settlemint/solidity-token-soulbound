@@ -1,5 +1,5 @@
 {
-  "output": "generated/solidity-token-soulbound.",
+  "output": "generated/scs.",
   "chain": "localhost",
   "datasources": [
     {
