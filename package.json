@@ -26,6 +26,6 @@
     "@graphprotocol/graph-ts": "0.35.1"
   },
   "dependencies": {
-    "@openzeppelin/contracts-upgradeable": "^5.0.2"
+    "@openzeppelin/contracts-upgradeable": "5.0.2"
   }
 }
