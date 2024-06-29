@@ -3,12 +3,15 @@
 
 pragma solidity ^0.8.24;
 
-import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
-import {ERC1155SupplyUpgradeable, ERC1155Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
-import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import {PausableUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import { UUPSUpgradeable } from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
+import {
+    ERC1155SupplyUpgradeable,
+    ERC1155Upgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
+import { AccessControlUpgradeable } from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import { PausableUpgradeable, Initializable } from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 contract Soulbound is
     Initializable,
@@ -27,11 +30,7 @@ contract Soulbound is
     string public name;
     string public symbol;
 
-    function initialize(
-        string memory name_,
-        string memory symbol_,
-        string memory uri_
-    ) external initializer {
+    function initialize(string memory name_, string memory symbol_, string memory uri_) external initializer {
         __ERC1155_init(uri_);
         __AccessControl_init();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -44,11 +43,11 @@ contract Soulbound is
         address to,
         uint256[] memory ids,
         uint256[] memory values
-    ) internal override(ERC1155SupplyUpgradeable) {
-        require(
-            from == address(0) || to == address(0),
-            "A Soulbound token cannot be transferred"
-        );
+    )
+        internal
+        override(ERC1155SupplyUpgradeable)
+    {
+        require(from == address(0) || to == address(0), "A Soulbound token cannot be transferred");
         super._update(from, to, ids, values);
     }
 
@@ -57,18 +56,12 @@ contract Soulbound is
     }
 
     function pause() public virtual {
-        require(
-            hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
-            "Caller is not an admin role authorised"
-        );
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin role authorised");
         _pause();
     }
 
     function unpause() public virtual {
-        require(
-            hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
-            "Caller is not an admin role authorised"
-        );
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin role authorised");
         _unpause();
     }
 
@@ -93,10 +86,7 @@ contract Soulbound is
         _burn(msg.sender, tokenId, amounts);
     }
 
-    function burnBatch(
-        uint256[] memory tokenIds,
-        uint256[] memory amounts
-    ) external {
+    function burnBatch(uint256[] memory tokenIds, uint256[] memory amounts) external {
         _burnBatch(msg.sender, tokenIds, amounts);
     }
 
@@ -108,27 +98,20 @@ contract Soulbound is
         return string(abi.encodePacked(super.uri(id), id.toString(), ".json"));
     }
 
-    function setApprovalForAll(
-        address operator,
-        bool approved
-    ) public virtual override {
+    function setApprovalForAll(address operator, bool approved) public virtual override {
         _setApprovalForAll(msg.sender, operator, approved);
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    )
+    function supportsInterface(bytes4 interfaceId)
         public
         view
         virtual
         override(ERC1155Upgradeable, AccessControlUpgradeable)
         returns (bool)
     {
-        return
-            interfaceId == type(OwnableUpgradeable).interfaceId ||
-            super.supportsInterface(interfaceId);
+        return interfaceId == type(OwnableUpgradeable).interfaceId || super.supportsInterface(interfaceId);
     }
 
     /* ========== RESTRICTED FUNCTIONS ========== */
-    function _authorizeUpgrade(address newImplementation) internal override {}
+    function _authorizeUpgrade(address newImplementation) internal override { }
 }
