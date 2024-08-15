@@ -9,7 +9,7 @@
 <br/>
 <p align="center">
 <a href="https://github.com/settlemint/solidity-token-soulbound/actions?query=branch%3Amain"><img src="https://github.com/settlemint/solidity-token-soulbound/actions/workflows/solidity.yml/badge.svg?event=push&branch=main" alt="CI status" /></a>
-<a href="https://fsl.software" rel="nofollow"><img src="https://img.shields.io/npm/l/@settlemint/sdk" alt="License"></a>
+<a href="https://fsl.software" rel="nofollow"><img src="https://img.shields.io/npm/l/@settlemint/solidity-token-soulbound" alt="License"></a>
 <a href="https://www.npmjs.com/package/@settlemint/solidity-token-soulbound" rel="nofollow"><img src="https://img.shields.io/npm/dw/@settlemint/solidity-token-soulbound" alt="npm"></a>
 <a href="https://github.com/settlemint/solidity-token-soulbound" rel="nofollow"><img src="https://img.shields.io/github/stars/settlemint/solidity-token-soulbound" alt="stars"></a>
 </p>
