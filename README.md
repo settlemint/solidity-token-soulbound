@@ -21,7 +21,7 @@ forge init my-project --template settlemint/solidity-token-soulbound
 Or if you want to use this set as a dependency of your own,
 
 ```shell
-npm install @settlemint/solidity-token-soulbound
+bun install @settlemint/solidity-token-soulbound
 ```
 
 ## DX: Foundry & Hardhat hybrid
