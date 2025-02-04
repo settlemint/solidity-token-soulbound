@@ -91,6 +91,7 @@ contract Soulbound is
     }
 
     function setURI(string memory newuri) external {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin role authorised");
         _setURI(newuri);
     }
 

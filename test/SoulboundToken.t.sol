@@ -8,6 +8,7 @@ import { IERC1155 } from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 contract SoulboundTokenTest is Test {
     Soulbound soulbound;
     address operator = address(0x123);
+    address user = makeAddr("user");
     string uri = "https://example.com/metadata/";
     string newUri = "https://example.com/new-metadata/";
 
@@ -50,6 +51,12 @@ contract SoulboundTokenTest is Test {
     function testSetNewUri() public {
         soulbound.setURI(newUri);
         assertEq(soulbound.uri(1), string(abi.encodePacked(newUri, "1.json")));
+    }
+
+    function testSetNewUriWhenNotAdmin() public {
+        vm.prank(user);
+        vm.expectRevert();
+        soulbound.setURI(newUri);
     }
 
     function testMintFunction() public {
